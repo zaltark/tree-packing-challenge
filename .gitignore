@@ -3,13 +3,19 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Data
-data/raw/
-data/processed/
+# Data (Strictly ignored)
+data/
 *.csv
 *.parquet
-*.pkl
-*.h5
+*.json
+*.zip
+*.gz
+*.7z
+
+# Models & Results (Allowed)
+# We do NOT ignore .pkl, .h5, .joblib if you want to upload models
+# !models/*.pkl
+# !results/*.png
 
 # Environment
 .env
@@ -20,3 +26,4 @@ env/
 # IDE
 .vscode/
 .idea/
+.DS_Store
