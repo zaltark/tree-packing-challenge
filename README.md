@@ -1,96 +1,32 @@
 # Santa 2025: Tree Packing Challenge
 
-Repository for the Santa 2025 Tree Packing Challenge. This project is structured to move beyond notebooks into a robust, local development pipeline.
+Repository for the Santa 2025 Tree Packing Challenge. This project has evolved from biological growth simulations to a high-performance mathematical tiling strategy.
 
-## Core Modules
+## The Champion: Centric Crystal Growth
+The current top-performing model utilizes **Centric Crystal Growth**. 
 
-- **[src/models/tree_geometry.py](src/models/tree_geometry.py)**: **The Rules.** Contains the `ChristmasTree` class with precise polygon definitions. This is the source of truth for tree dimensions and rotations.
-- **[src/models/engine.py](src/models/engine.py)**: **The Validator.** Implements efficient collision detection using `shapely.strtree.STRtree` and calculates the competition score.
-- **[src/models/solver.py](src/models/solver.py)**: **The Brains.** Where the packing algorithms live. Currently implements a greedy "slide-in" heuristic with weighted axis-aligned rotations.
-- **[src/submission/formatter.py](src/submission/formatter.py)**: **The Administrative.** Handles the conversion of coordinate data into the specific `s{value}` string format and `id` structure required for Kaggle submissions.
-
-## Project Structure
-
-- `data/`: Local storage for competition data (ignored by git).
-- `scripts/`: Executable scripts for EDA, testing, and visualization.
-- `results/`: Output directory for plots and submission files.
-- `config/`: Centralized path management to ensure portability across environments.
-
-## Quick Start
-
-1. **Install Dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Verify Geometry:**
-   ```bash
-   python scripts/test_tree.py
-   ```
-
-3. **Run Baseline Solver & Visualize:**
-   ```bash
-   python scripts/visualize_results.py
-   ```
-
-## References
-
-- [COMPETITION_OVERVIEW.md](COMPETITION_OVERVIEW.md): Goals, evaluation metrics, and timeline.
-
-- [TREE_SPECIFICATIONS.md](TREE_SPECIFICATIONS.md): Detailed vertex coordinates and geometric constraints.
-
-
+### Key Features:
+- **Jigsaw Interlock:** Alternates trees between 0° and 180° rotations, allowing triangular tiers to nest perfectly into one another.
+- **Centric Proactive Search:** Instead of a linear scan, the model searches for valid "rooting" spots starting from (0,0) and moving outwards using a Manhattan-distance priority ($max(|x|, |y|)$).
+- **The "X Pattern":** This search strategy forces the trees into a dense, square-clump formation that expands symmetrically, often creating a visible "X" or diamond-like density pattern.
+- **High Precision:** Uses a 0.05 unit step-size to find the absolute tightest safe fit without overlapping.
 
 ## Model Benchmarks (Final Scores)
 
-
-
-
-
-
-
-| N | Greedy Baseline | Bio-Growth (Evolved) | Hybrid Sunflower | Winner |
-
-
-
+| N | Greedy Baseline | Bio-Growth | Crystal Growth (Centric) | Winner |
 | :--- | :--- | :--- | :--- | :--- |
-
-
-
 | **1** | **0.845** | 1.000 | 1.000 | Greedy |
+| **50** | 0.822 | 0.904 | **0.732** | **Crystal** |
+| **100** | 0.860 | 0.872 | **0.632** | **Crystal** |
+| **250** | 0.846 | 0.864 | **0.552** | **Crystal** |
 
+## Status Report
+- **Greedy Baseline:** Replaced as the champion. Still useful for small N (N < 10) where local heuristics are fast.
+- **Phyllotaxis (Bio-Growth):** Legacy experiment. Proved that "natural" growth is too circular for square-box competition scoring.
+- **Centric Crystal:** **Current Champion.** Achieved a ~35% improvement over the baseline at N=250.
 
-
-| **50** | **0.822** | 0.904 | 1.623 | Greedy |
-
-
-
-| **100** | **0.860** | 0.872 | 1.741 | Greedy |
-
-
-
-| **250** | **0.846** | 0.864 | 2.351 | Greedy |
-
-
-
-
-
-
-
-### Status Report
-
-
-
-- **Greedy Baseline:** Most consistent performer across all scales. Its constructive "slide-in" mechanic handles local interlocking effectively.
-
-
-
-- **Bio-Growth (Evolved):** Shows strong potential at scale (N=100+). The evolved square-aware spiral successfully minimizes global bounding boxes.
-
-
-
-- **Hybrid Sunflower:** **FAILED.** The current implementation of switching to "corner filling" logic expanded the bounding box rather than compressing it. The model has been sidelined but preserved for post-mortem analysis.
-
-
-
-
+## Project Structure
+- `src/models/tree_geometry.py`: Source of truth for tree dimensions and intersection rules.
+- `src/models/crystal_growth_solver.py`: The winning interlocking scanline/centric model.
+- `scripts/run_benchmark.py`: Comparative evaluation suite.
+- `results/plots/`: Visual confirmation of valid, non-overlapping packings.

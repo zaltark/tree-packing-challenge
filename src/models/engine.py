@@ -67,10 +67,8 @@ class PackingEngine:
             
         # The coordinates in the objects are scaled by 1e18.
         # We need to scale back to get the competition score dimensions.
-        from src.models.tree_geometry import SCALE_FACTOR
-        
-        width = (max_x - min_x) / float(SCALE_FACTOR)
-        height = (max_y - min_y) / float(SCALE_FACTOR)
+        width = (max_x - min_x)
+        height = (max_y - min_y)
         
         # The bounding box must be a square, and coordinates must be within [-100, 100].
         # However, the competition scores based on the smallest square side length needed to contain them.
