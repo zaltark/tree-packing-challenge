@@ -41,30 +41,56 @@ Repository for the Santa 2025 Tree Packing Challenge. This project is structured
 
 
 
-## Baseline Model Performance (Greedy Slide-In)
+## Model Benchmarks (Final Scores)
 
 
 
-The baseline model implements a constructive greedy heuristic that slides trees in from the boundary until a collision occurs.
 
 
 
-| Problem Size (N) | Bounding Side Length | Final Score ($Side^2/N$) |
 
-| :--- | :--- | :--- |
-
-| **1** | 0.9559 | 0.9137 |
-
-| **50** | 6.3005 | 0.7939 |
-
-| **100** | 9.4745 | 0.8977 |
-
-| **150** | 11.1804 | 0.8333 |
-
-| **200** | 13.3706 | 0.8939 |
-
-| **250** | 14.5510 | **0.8469** |
+| N | Greedy Baseline | Bio-Growth (Evolved) | Hybrid Sunflower | Winner |
 
 
 
-**Observation:** The greedy approach creates significant internal gaps because it lacks global optimization. Our next goal is to improve this packing density using evolutionary strategies.
+| :--- | :--- | :--- | :--- | :--- |
+
+
+
+| **1** | **0.845** | 1.000 | 1.000 | Greedy |
+
+
+
+| **50** | **0.822** | 0.904 | 1.623 | Greedy |
+
+
+
+| **100** | **0.860** | 0.872 | 1.741 | Greedy |
+
+
+
+| **250** | **0.846** | 0.864 | 2.351 | Greedy |
+
+
+
+
+
+
+
+### Status Report
+
+
+
+- **Greedy Baseline:** Most consistent performer across all scales. Its constructive "slide-in" mechanic handles local interlocking effectively.
+
+
+
+- **Bio-Growth (Evolved):** Shows strong potential at scale (N=100+). The evolved square-aware spiral successfully minimizes global bounding boxes.
+
+
+
+- **Hybrid Sunflower:** **FAILED.** The current implementation of switching to "corner filling" logic expanded the bounding box rather than compressing it. The model has been sidelined but preserved for post-mortem analysis.
+
+
+
+
