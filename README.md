@@ -34,5 +34,37 @@ Repository for the Santa 2025 Tree Packing Challenge. This project is structured
    ```
 
 ## References
+
 - [COMPETITION_OVERVIEW.md](COMPETITION_OVERVIEW.md): Goals, evaluation metrics, and timeline.
+
 - [TREE_SPECIFICATIONS.md](TREE_SPECIFICATIONS.md): Detailed vertex coordinates and geometric constraints.
+
+
+
+## Baseline Model Performance (Greedy Slide-In)
+
+
+
+The baseline model implements a constructive greedy heuristic that slides trees in from the boundary until a collision occurs.
+
+
+
+| Problem Size (N) | Bounding Side Length | Final Score ($Side^2/N$) |
+
+| :--- | :--- | :--- |
+
+| **1** | 0.9559 | 0.9137 |
+
+| **50** | 6.3005 | 0.7939 |
+
+| **100** | 9.4745 | 0.8977 |
+
+| **150** | 11.1804 | 0.8333 |
+
+| **200** | 13.3706 | 0.8939 |
+
+| **250** | 14.5510 | **0.8469** |
+
+
+
+**Observation:** The greedy approach creates significant internal gaps because it lacks global optimization. Our next goal is to improve this packing density using evolutionary strategies.
