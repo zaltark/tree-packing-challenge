@@ -10,7 +10,7 @@ from src.models.bio_growth_solver import BioGrowthSolver
 from scripts.visualize_results import plot_trees
 
 def main():
-    milestones = [1, 50, 100, 250]
+    milestones = [1, 50, 100, 200]
     results = []
 
     print("--- Running Bio-Growth (Evolved) ---")

@@ -9,7 +9,7 @@ from src.models.hybrid_solver import HybridPhyllotaxisSolver
 from scripts.visualize_results import plot_trees
 
 def main():
-    milestones = [1, 50, 100, 250]
+    milestones = [1, 50, 100, 200]
     results = []
     
     # We can experiment with core_ratio. 

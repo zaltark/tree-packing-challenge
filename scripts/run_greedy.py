@@ -10,7 +10,7 @@ from src.models.greedy_solver import SlideInSolver
 from scripts.visualize_results import plot_trees
 
 def main():
-    milestones = [1, 50, 100, 250]
+    milestones = [1, 50, 100, 200]
     solver = SlideInSolver()
     current_trees = []
     results = []

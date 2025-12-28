@@ -51,7 +51,7 @@ def evolve_stacker(n_trees, generations=15):
     return best_dna, best_score
 
 def main():
-    milestones = [1, 50, 100, 250]
+    milestones = [1, 50, 100, 200]
     results = []
     for n in milestones:
         best_dna, score = evolve_stacker(n)
