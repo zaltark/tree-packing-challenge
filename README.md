@@ -2,15 +2,19 @@
 
 This repository contains a high-performance local pipeline for the Santa 2025 Tree Packing Challenge.
 
-## Current Strategy: The Duo
-We use a two-pronged approach for optimal packing:
-1. **The Architect (Brick Tiler):** Our primary high-N engine using a Slanted Brick tiling strategy.
-2. **The Prime Solver (Annealer):** Our specialized model used for small N and complex odd/prime configurations where rigid grids are less efficient.
+## Current Strategy: The Champion & The Contender
+Our pipeline has evolved to focus on high-precision geometric packing:
+1. **The Champion (Brick Tiler):** Our dominant engine. It uses slanted grid logic to achieve world-class density across most N values. It is currently our most robust and efficient model.
+2. **The Contender (Prime Solver):** Our active research focus. This model is being refined specifically to handle small **Primes and Odd Numbers** where rigid grid tiling leaves awkward gaps.
+
+### Current Research Goal: Square Optimization
+Our primary objective is to fit trees into a **perfect square** with minimal waste. 
+- **The Challenge:** While even numbers often form stable rectangles, **Prime and Odd N** values naturally "skew" the geometry. These configurations often resist standard grid alignment, forcing us to discover organic, interlocking clusters that maintain a square aspect ratio without sacrificing density.
 
 ### Key Insights:
 - **Jigsaw Interlocking:** Alternating trees (0° and 180°) allows triangular tiers to nest perfectly, eliminating internal gaps.
+- **Skew Mitigation:** We are developing custom "seed" patterns for small primes (3, 7, 11, 13) to act as the core for larger odd-numbered packs.
 - **Native Grid Logic:** The Brick Tiler assigns trees to mathematical brick slots for uniform density.
-- **Prime Optimization:** The Prime Solver uses simulated annealing to find organic, high-density clusters for edge cases.
 
 ## Model Benchmarks (Final Scores)
 
