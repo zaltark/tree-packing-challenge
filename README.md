@@ -25,8 +25,20 @@ Our current champion model, **Centric Crystal Growth**, treats the tree packing 
 - **Method:** Generated in a single pass using the Centric Crystal model for $N=1$ to $N=200$.
 - **Validation:** 100% overlap-free, verified using `shapely.strtree.STRtree`.
 
+## References
+
+- [COMPETITION_RULES.md](COMPETITION_RULES.md): Exact tree dimensions, submission formatting, and scoring constraints.
+
+- [COMPETITION_OVERVIEW.md](COMPETITION_OVERVIEW.md): General goals and timeline.
+
+
+
 ## Project Structure
-- `src/models/`: Modular solvers including `greedy`, `bio_growth`, and the winning `crystal_growth`.
+
+- `src/models/`: Modular solvers including the winning `crystal_growth`.
+
 - `scripts/`: Automated runners for benchmarking and submission generation.
+
 - `results/plots/`: Visual confirmation of the "X Pattern" and dense interlocking.
+
 - `config/`: Centralized targets and best-known scores.
