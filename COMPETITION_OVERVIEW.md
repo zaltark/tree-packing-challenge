@@ -1,26 +1,29 @@
-# 2025 Kaggle Playground Series: Tree Packing Challenge
+# Santa 2025: Tree Packing Challenge
 
 ## Overview
-The goal of this competition is to predict the probability that a patient will be diagnosed with diabetes using a synthetically generated dataset based on real-world data.
+The goal of this competition is to pack as many Christmas Trees as possible into the smallest axis-aligned bounding square. This is a geometry-based tiling and optimization challenge.
 
 ## Goal
-Predict the probability for the `diagnosed_diabetes` variable for each `id` in the test set.
+Minimize the final score, which is determined by the size of the bounding box relative to the number of trees successfully placed.
 
 ## Evaluation
-Submissions are evaluated on **Area Under the ROC Curve (AUC)** between the predicted probability and the observed target.
+Submissions are evaluated on the efficiency of the packing:
+$$Score = \frac{SideLength^2}{N}$$
+
+Where:
+- **SideLength:** The side length of the smallest axis-aligned bounding square that contains all placed trees.
+- **N:** The total number of trees successfully packed.
 
 ### Submission Format
 The submission file should be a CSV with a header and the following format:
 ```csv
-id,diagnosed_diabetes
-700000,0.2
-700001,0.4
-700002,0.5
+id,x,y,deg
+001_0,s0.0,s0.0,s20.411299
+002_0,s0.0,s0.0,s20.411299
+002_1,s-0.541068,s0.259317,s51.66348
 ```
+*Note: Values must be strings prefixed with 's'.*
 
 ## Timeline
 - **Start Date:** December 1, 2025
 - **Final Submission Deadline:** December 31, 2025 (11:59 PM UTC)
-
-## About the Dataset
-This is a tabular dataset synthetically generated from real-world data. It is designed to be lightweight, allowing for quick iteration on feature engineering and modeling.
