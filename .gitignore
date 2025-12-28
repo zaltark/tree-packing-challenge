@@ -6,6 +6,7 @@ __pycache__/
 # Data (Strictly ignored)
 data/
 COMPETITION_RULES.md
+config/magic_params.py
 *.csv
 *.parquet
 *.json
