@@ -1,13 +1,8 @@
 import math
-
-# Updated targets from Centric Crystal Growth: Side = sqrt(Score * N)
-# Competition primary goal: N=200
-BEST_KNOWN_SIDES = {
-    1: 0.92,
-    50: 6.05,
-    100: 7.95,
-    200: 10.51 # Calculated from champion performance
-}
+try:
+    from config.magic_params import BEST_KNOWN_SIDES
+except ImportError:
+    BEST_KNOWN_SIDES = {}
 
 def get_target_side(n):
     """Returns the side length to beat for a given N."""
