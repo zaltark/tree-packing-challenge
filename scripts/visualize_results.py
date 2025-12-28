@@ -38,13 +38,14 @@ def plot_trees(placements_df, output_path=None):
         plt.show()
 
 if __name__ == "__main__":
-    from src.models.solver import SlideInSolver
+    from src.models.brick_tiler_solver import BrickTilerSolver
     
     # Run a small simulation and plot
-    solver = SlideInSolver()
-    results = solver.solve(num_trees=50)
+    solver = BrickTilerSolver()
+    trees, _ = solver.solve(num_trees=50)
+    results = pd.DataFrame([{'x': t.center_x, 'y': t.center_y, 'angle': t.angle} for t in trees])
     
     output_dir = PROJECT_ROOT / "results" / "plots"
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    plot_trees(results, output_path=output_dir / "baseline_packing.png")
+    plot_trees(results, output_path=output_dir / "brick_tiler_50.png")

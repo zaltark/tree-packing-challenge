@@ -1,14 +1,16 @@
 # Santa 2025: Tree Packing Challenge
 
-This repository contains a high-performance local pipeline for the Santa 2025 Tree Packing Challenge. The project features a mathematically optimized "Slanted Brick" tiling strategy that outperforms standard greedy heuristics by up to 50%.
+This repository contains a high-performance local pipeline for the Santa 2025 Tree Packing Challenge.
 
-## The Champion: Native Grid Brick Tiler
-Our top-performing model utilizes a **Native Grid Tiling** strategy.
+## Current Strategy: The Duo
+We use a two-pronged approach for optimal packing:
+1. **The Architect (Brick Tiler):** Our primary high-N engine using a Slanted Brick tiling strategy.
+2. **The Prime Solver (Annealer):** Our specialized model used for small N and complex odd/prime configurations where rigid grids are less efficient.
 
 ### Key Insights:
 - **Jigsaw Interlocking:** Alternating trees (0° and 180°) allows triangular tiers to nest perfectly, eliminating internal gaps.
-- **Native Grid Logic:** Every tree, including the remainder in odd-numbered problems, is assigned to a mathematical brick slot. This ensures that even odd configurations maintain a dense, uniform structure.
-- **Shell Growth:** The grid expands from the center in square "onion" layers, keeping the total bounding box aspect ratio as close to a perfect square as possible.
+- **Native Grid Logic:** The Brick Tiler assigns trees to mathematical brick slots for uniform density.
+- **Prime Optimization:** The Prime Solver uses simulated annealing to find organic, high-density clusters for edge cases.
 
 ## Model Benchmarks (Final Scores)
 
@@ -22,13 +24,21 @@ Our top-performing model utilizes a **Native Grid Tiling** strategy.
 | **152** | - | - | **0.438** | **Brick** |
 | **200** | 0.880 | 0.977 | **0.431** | **Brick** |
 
+## Deprecated Models (Ended Tests)
+The following strategies have been tested and moved to `src/models/deprecated/` as they were outperformed by the current duo:
+- **Bio-Growth:** Biological spiral expansion.
+- **Hybrid Sunflower:** Combined spiral and corner-fill.
+- **Crystal Growth:** Seed-based expansion.
+- **Kaleidoscope:** Radial symmetry packing.
+- **Greedy / Slanted Row:** Simple heuristic baselines.
+
 ## Submissions
-- **Submission File:** `results/brick_tiler_submission.csv`
-- **Method:** Generated using the Native Grid model for $N=1$ to $N=200$.
+- **Submission File:** `results/final_ensemble_submission.csv`
+- **Method:** Generated using the `ensemble_manager.py` which picks the best result between Brick Tiler and Prime Solver for each N.
 - **Validation:** 100% overlap-free, verified with `shapely` spatial indices.
 
 ## Project Structure
-- `src/models/brick_tiler_solver.py`: The winning mathematical tiling model.
-- `scripts/run_brick_tiler.py`: Automated benchmark runner including edge cases (75, 133, 152).
-- `scripts/generate_submission.py`: Optimized one-pass submission generator.
-- `results/plots/`: Visual confirmation of the dense, interlocked packing patterns.
+- `src/models/brick_tiler_solver.py`: The primary mathematical tiling model.
+- `src/models/prime_solver.py`: The annealing solver for prime/odd cases.
+- `scripts/ensemble_manager.py`: Combines outputs from both solvers.
+- `results/plots/`: Visual confirmation of the packing patterns.

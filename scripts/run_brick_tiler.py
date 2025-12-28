@@ -6,14 +6,17 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(PROJECT_ROOT))
 
 from src.models.brick_tiler_solver import BrickTilerSolver
+from src.utils.math_utils import get_primes
 from scripts.visualize_results import plot_trees
 
 def main():
-    milestones = [1, 50, 75, 100, 133, 152, 200]
+    # Primary milestones + primes up to 30 for comparison
+    milestones = [50, 75, 100, 133, 152, 200]
+    targets = sorted(list(set([1] + get_primes(30) + milestones)))
     results = []
     
-    print("--- Running Brick Tiler (Square-Grid Stacking) ---")
-    for n in milestones:
+    print("--- Running Brick Tiler Benchmark ---")
+    for n in targets:
         solver = BrickTilerSolver()
         trees, side = solver.solve(n, stop_on_failure=True)
         
