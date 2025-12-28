@@ -16,17 +16,27 @@ Our primary objective is to fit trees into a **perfect square** with minimal was
 - **Skew Mitigation:** We are developing custom "seed" patterns for small primes (3, 7, 11, 13) to act as the core for larger odd-numbered packs.
 - **Native Grid Logic:** The Brick Tiler assigns trees to mathematical brick slots for uniform density.
 
-## Model Benchmarks (Final Scores)
+## Model Benchmarks (Historical Evaluation)
 
-| N | Greedy Baseline | Bio-Growth | **Brick Tiler (Native)** | Winner |
-| :--- | :--- | :--- | :--- | :--- |
-| **1** | 0.950 | 1.000 | **0.662** | **Brick** |
-| **50** | 0.860 | 1.058 | **0.550** | **Brick** |
-| **75** | - | - | **0.484** | **Brick** |
-| **100** | 0.830 | 1.038 | **0.454** | **Brick** |
-| **133** | - | - | **0.417** | **Brick** |
-| **152** | - | - | **0.438** | **Brick** |
-| **200** | 0.880 | 0.977 | **0.431** | **Brick** |
+| N | Greedy Baseline | Bio-Growth | **Brick Tiler (Native)** | Prime Solver | Winner |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | 0.950 | 1.000 | **0.662** | - | **Brick** |
+| **2** | 1.092 | 1.187 | 0.726 | **0.451** | **Prime** |
+| **3** | 0.851 | 1.250 | 0.663 | **0.554** | **Prime** |
+| **5** | 0.803 | 1.546 | 0.899 | **0.519** | **Prime** |
+| **7** | 0.755 | 2.413 | **0.701** | 0.715 | **Brick** |
+| **11** | 0.805 | 1.535 | **0.557** | 0.637 | **Brick** |
+| **13** | 0.756 | 1.583 | 0.616 | **0.607** | **Prime** |
+| **17** | 0.717 | 1.675 | **0.612** | 0.659 | **Brick** |
+| **19** | 0.792 | 1.612 | **0.547** | 0.917 | **Brick** |
+| **23** | 0.762 | 1.653 | **0.452** | 0.799 | **Brick** |
+| **29** | 0.760 | 1.502 | **0.523** | 0.701 | **Brick** |
+| **50** | 0.860 | 1.058 | **0.550** | - | **Brick** |
+| **75** | 0.813 | 1.423 | **0.484** | - | **Brick** |
+| **100** | 0.830 | 1.038 | **0.454** | - | **Brick** |
+| **133** | 0.823 | 1.296 | **0.417** | - | **Brick** |
+| **152** | 0.851 | 1.303 | **0.438** | - | **Brick** |
+| **200** | 0.880 | 0.977 | **0.431** | - | **Brick** |
 
 ## Deprecated Models (Ended Tests)
 The following strategies have been tested and moved to `src/models/deprecated/` as they were outperformed by the current duo:
