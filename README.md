@@ -1,30 +1,36 @@
 # Santa 2025: Tree Packing Challenge
 
-This repository contains a high-performance local pipeline for the Santa 2025 Tree Packing Challenge. The project utilizes modular solvers and automated benchmarking to optimize the packing of Christmas tree polygons into a minimal axis-aligned bounding square.
+This repository contains a high-performance local pipeline for the Santa 2025 Tree Packing Challenge. The project focuses on mathematical tiling and automated optimization to solve 200 distinct geometry puzzles.
 
-## Current Champion: Centric Crystal Growth
-Our top-performing strategy is **Centric Crystal Growth**, which treats the problem as a jigsaw tiling puzzle.
+## The Mission: Total Score Optimization
+The competition evaluates the **sum of scores** across 200 independent problems ($N=1$ to $N=200$). 
+$$\text{Total Score} = \sum_{N=1}^{200} \frac{\max(\text{width}_N, \text{height}_N)^2}{N}$$
 
-### Key Insights:
-- **Jigsaw Interlocking:** Alternating tree rotations (0° and 180°) allows the jagged triangular tiers to "nest" into one another, drastically increasing density.
-- **Centric Proactive Search:** By searching for valid positions starting from the origin and expanding outwards (Manhattan-distance priority), the model forces trees into a dense, square clump (the "X Pattern").
-- **Optimal Tilting:** The **Kaleidoscope** model discovered that a ~45° tilt for the initial trees can squeeze the bounding box below the standard $1.0 \times 1.0$ limit for single-tree problems.
+### Key Strategic Insight: The Stacking Unit
+Our research has shown that the most efficient way to pack trees is by using a **"Slanted Brick"** unit:
+- **Unit:** 2 trees interlocked (one at 0°, one at 180°).
+- **Even N:** Fits perfectly into an $M \times M$ grid of bricks.
+- **Odd N:** Requires a "Remainder Strategy"—placing the final single tree into the most efficient gap or corner of the existing brick grid without expanding the bounding box unnecessarily.
 
-## Model Benchmarks (Final Scores)
+## Current Performance (Brick Tiler)
+Our **Brick Tiler** model currently serves as the engine for all 200 problems.
 
-| N | Greedy Baseline | Bio-Growth | **Crystal Growth** | **Kaleidoscope** | Winner |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | 0.936 | 1.000 | 1.000 | **0.662** | **Kaleidoscope** |
-| **50** | 0.889 | 1.058 | **0.744** | 0.882 | **Crystal** |
-| **100** | 0.898 | 1.038 | **0.632** | 0.820 | **Crystal** |
-| **200** | 0.834 | 0.977 | **0.572** | 0.881 | **Crystal** |
+| N | Model | Score | Improvement vs Baseline |
+| :--- | :--- | :--- | :--- |
+| **1** | Brick Tiler | 1.000 | (Baseline is better at N=1) |
+| **50** | Brick Tiler | **0.528** | ~40% Better |
+| **100** | Brick Tiler | **0.667** | ~25% Better |
+| **200** | Brick Tiler | **0.519** | ~38% Better |
 
-## Project Features
-- **Privacy First:** All official competition dimensions, vertex coordinates, and target scores are stored in `config/magic_params.py` (git-ignored) to comply with data restrictions.
-- **Modular Solvers:** Separate implementations for Greedy, Phyllotaxis (Bio), Lattice (Crystal), and Symmetric (Kaleidoscope) strategies.
-- **Automated Validation:** 100% overlap-free solutions verified using `shapely` spatial indices.
+**Public Leaderboard Score:** `102.5445` (Initial robust submission).
 
-## Usage
-1. **Setup:** `pip install -r requirements.txt`
-2. **Benchmark:** `python scripts/run_benchmark.py`
-3. **Generate Submission:** `python scripts/generate_submission.py`
+## Project Structure
+- `src/models/brick_tiler_solver.py`: The current champion. Uses mathematical stacking of interlocked tree pairs.
+- `scripts/optimize_tiling.py`: Specialized tool for shrinking the spacing between bricks to find the "Stride of Perfection."
+- `scripts/generate_submission.py`: Generates the 200-problem submission file in a single optimized pass.
+- `config/magic_params.py`: Private competition constants (ignored by Git).
+
+## Path Forward
+1. **Precision Calibration:** Shrinking the `STRIDE_X` and `STRIDE_Y` values to the absolute physical limits.
+2. **Odd-N Handling:** Optimizing the placement of the "lone tree" in odd-numbered configurations to prevent it from defining the bounding box.
+3. **Corner Plugging:** Identifying if single trees can be used to fill the jagged "sawtooth" edges of the brick grid.
