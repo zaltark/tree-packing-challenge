@@ -9,7 +9,7 @@ from src.models.brick_tiler_solver import BrickTilerSolver
 from scripts.visualize_results import plot_trees
 
 def main():
-    milestones = [1, 50, 100, 200]
+    milestones = [1, 50, 75, 100, 133, 152, 200]
     results = []
     
     print("--- Running Brick Tiler (Square-Grid Stacking) ---")
