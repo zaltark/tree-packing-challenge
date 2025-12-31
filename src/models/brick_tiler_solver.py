@@ -4,6 +4,7 @@ import sys
 from decimal import Decimal
 from shapely.ops import unary_union
 from src.models.tree_geometry import ChristmasTree
+from src.utils.packing_targets import TargetLibrary
 
 class BrickTilerSolver:
     """
@@ -21,46 +22,40 @@ class BrickTilerSolver:
     def solve(self, num_trees, stop_on_failure=False):
         if num_trees == 0: return [], 0
         if num_trees == 1:
-            t = ChristmasTree(0, 0, 44.9)
+            t = ChristmasTree(0, 0, 44.9) # Optimal single tree rotation
             return [t], self._get_side([t])
 
-        # 1. Determine how many brick slots we need
-        # A brick slot has space for 2 trees.
-        n_slots = (num_trees + 1) // 2
-        
-        # 2. Generate centered grid coordinates
-        # Aspect ratio to keep it square-ish
-        ratio = self.stride_y / self.stride_x
-        est_rows = math.sqrt(n_slots / ratio)
-        rows = max(1, round(est_rows))
-        cols = max(1, round(n_slots / rows))
-        while rows * cols < n_slots:
-            if (cols * self.stride_x) < (rows * self.stride_y): cols += 1
-            else: rows += 1
+        # 1. Determine optimal grid dimensions from TargetLibrary
+        target = TargetLibrary.get_target(num_trees)
+        rows = target.rows
+        cols = target.cols
+        if num_trees == 5:
+            print(f"DEBUG N=5: Target Grid {cols}x{rows}")
                 
         grid_points = []
         offset_c, offset_r = (cols - 1) / 2.0, (rows - 1) / 2.0
         for r in range(rows):
             for c in range(cols):
                 pos_x, pos_y = (c - offset_c) * self.stride_x, (r - offset_r) * self.stride_y
-                # Sort by Chebyshev distance to fill square shells
                 grid_points.append((max(abs(pos_x), abs(pos_y)), pos_x, pos_y))
         
+        # Sort points to fill from center outward
         grid_points.sort()
         
         # 3. Fill the slots sequentially
         placed_trees = []
         for _, bx, by in grid_points:
+            if len(placed_trees) >= num_trees: break
+            
             # Add Tree A (Up)
-            if len(placed_trees) < num_trees:
-                placed_trees.append(ChristmasTree(center_x=bx, center_y=by, angle=0))
+            placed_trees.append(ChristmasTree(center_x=bx, center_y=by, angle=0))
+            if num_trees == 5: print(f"DEBUG N=5: Added Tree at {bx}, {by} (0 deg)")
+            
+            if len(placed_trees) >= num_trees: break
             
             # Add Tree B (Down)
-            if len(placed_trees) < num_trees:
-                placed_trees.append(ChristmasTree(center_x=bx + self.u_dx, center_y=by + self.u_dy, angle=180))
-            
-            if len(placed_trees) >= num_trees:
-                break
+            placed_trees.append(ChristmasTree(center_x=bx + self.u_dx, center_y=by + self.u_dy, angle=180))
+            if num_trees == 5: print(f"DEBUG N=5: Added Tree at {bx + self.u_dx}, {by + self.u_dy} (180 deg)")
 
         return self._finalize(placed_trees)
 

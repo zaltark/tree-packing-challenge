@@ -2,57 +2,54 @@
 
 This repository contains a high-performance local pipeline for the Santa 2025 Tree Packing Challenge.
 
-## Current Strategy: The Champion & The Contender
-Our pipeline has evolved to focus on high-precision geometric packing:
-1. **The Champion (Brick Tiler):** Our dominant engine. It uses slanted grid logic to achieve world-class density across most N values. It is currently our most robust and efficient model.
-2. **The Contender (Prime Solver):** Our active research focus. This model is being refined specifically to handle small **Primes and Odd Numbers** where rigid grid tiling leaves awkward gaps.
+## Installation & Usage
 
-### Current Research Goal: Square Optimization
-Our primary objective is to fit trees into a **perfect square** with minimal waste. 
-- **The Challenge:** While even numbers often form stable rectangles, **Prime and Odd N** values naturally "skew" the geometry. These configurations often resist standard grid alignment, forcing us to discover organic, interlocking clusters that maintain a square aspect ratio without sacrificing density.
+### 1. Set up Environment
+The `venv` folder is not included in this repository. You must create your own virtual environment and install the dependencies.
 
-### Key Insights:
-- **Jigsaw Interlocking:** Alternating trees (0° and 180°) allows triangular tiers to nest perfectly, eliminating internal gaps.
-- **Skew Mitigation:** We are developing custom "seed" patterns for small primes (3, 7, 11, 13) to act as the core for larger odd-numbered packs.
-- **Native Grid Logic:** The Brick Tiler assigns trees to mathematical brick slots for uniform density.
+```bash
+# Create virtual environment
+python -m venv venv
 
-## Model Benchmarks (Historical Evaluation)
+# Activate (Windows)
+venc\Scripts\activate
 
-| N | Greedy Baseline | Bio-Growth | **Brick Tiler (Native)** | Prime Solver | Winner |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | 0.950 | 1.000 | **0.662** | - | **Brick** |
-| **2** | 1.092 | 1.187 | 0.726 | **0.451** | **Prime** |
-| **3** | 0.851 | 1.250 | 0.663 | **0.554** | **Prime** |
-| **5** | 0.803 | 1.546 | 0.899 | **0.519** | **Prime** |
-| **7** | 0.755 | 2.413 | **0.701** | 0.715 | **Brick** |
-| **11** | 0.805 | 1.535 | **0.557** | 0.637 | **Brick** |
-| **13** | 0.756 | 1.583 | 0.616 | **0.607** | **Prime** |
-| **17** | 0.717 | 1.675 | **0.612** | 0.659 | **Brick** |
-| **19** | 0.792 | 1.612 | **0.547** | 0.917 | **Brick** |
-| **23** | 0.762 | 1.653 | **0.452** | 0.799 | **Brick** |
-| **29** | 0.760 | 1.502 | **0.523** | 0.701 | **Brick** |
-| **50** | 0.860 | 1.058 | **0.550** | - | **Brick** |
-| **75** | 0.813 | 1.423 | **0.484** | - | **Brick** |
-| **100** | 0.830 | 1.038 | **0.454** | - | **Brick** |
-| **133** | 0.823 | 1.296 | **0.417** | - | **Brick** |
-| **152** | 0.851 | 1.303 | **0.438** | - | **Brick** |
-| **200** | 0.880 | 0.977 | **0.431** | - | **Brick** |
+# Activate (Mac/Linux)
+source venv/bin/activate
 
-## Deprecated Models (Ended Tests)
-The following strategies have been tested and moved to `src/models/deprecated/` as they were outperformed by the current duo:
-- **Bio-Growth:** Biological spiral expansion.
-- **Hybrid Sunflower:** Combined spiral and corner-fill.
-- **Crystal Growth:** Seed-based expansion.
-- **Kaleidoscope:** Radial symmetry packing.
-- **Greedy / Slanted Row:** Simple heuristic baselines.
+# Install Dependencies
+pip install -r requirements.txt
+```
+
+### 2. Run the Solver
+To generate the optimization, verification, and submission file in one go:
+
+```bash
+python scripts/generate_submission.py
+```
+This will:
+1.  Solve all 200 configurations using the Ensemble + Global Rotation strategy.
+2.  Save the submission to `results/brick_tiler_submission.csv`.
+3.  Verify the score against the official metric.
 
 ## Submissions
-- **Submission File:** `results/final_ensemble_submission.csv`
-- **Method:** Generated using the `ensemble_manager.py` which picks the best result between Brick Tiler and Prime Solver for each N.
-- **Validation:** 100% overlap-free, verified with `shapely` spatial indices.
+- **Submission File:** `results/brick_tiler_submission.csv`
+- **Verified Score:** **93.274331103423** (Improved via Global Rotation Optimization)
+- **Method:** Generated using `scripts/generate_submission.py`. 
+- **Optimization Pipeline:**
+    1. **Target Selection:** For each N, the script selects the best layout between a mathematically optimized **Brick Grid** (via `TargetLibrary`) and a manual **Prime Seed**.
+    2. **Global Rotation:** The entire tree cluster is brute-force rotated (0-180°) to minimize the bounding square, effectively aligning jagged edges diagonally to save space.
+- **Validation:** 100% overlap-free, verified using the official competition metric and `shapely` spatial indices.
 
 ## Project Structure
-- `src/models/brick_tiler_solver.py`: The primary mathematical tiling model.
-- `src/models/prime_solver.py`: The annealing solver for prime/odd cases.
-- `scripts/ensemble_manager.py`: Combines outputs from both solvers.
+- `src/models/brick_tiler_solver.py`: High-precision mathematical tiling model (The Champion).
+- `src/models/prime_seeds.py`: Manual optimization for small prime numbers (N=3, 5, 7).
+- `src/models/tree_geometry.py`: Verified official tree specifications and $10^{18}$ scaling.
+- `src/models/metric.py`: Official scoring logic (Side^2 / N).
+- `src/utils/packing_targets.py`: Heuristic for mathematically ideal grid aspect ratios.
+- `src/submission/formatter.py`: Submission CSV formatting.
+- `scripts/generate_submission.py`: **Main Pipeline**. Runs the ensemble, optimizes rotation, generates the CSV, and verifies the score.
+- `scripts/visualize_results.py`: Utility to plot packing configurations.
 - `results/plots/`: Visual confirmation of the packing patterns.
+
+*Note: All experimental and legacy scripts have been moved to `archive/` folders.*
