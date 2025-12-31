@@ -3,7 +3,7 @@ import numpy as np
 import sys
 from decimal import Decimal
 from shapely.ops import unary_union
-from src.models.tree_geometry import ChristmasTree
+from src.models.tree_geometry import ChristmasTree, SAFE_TOUCH_BUFFER
 from src.utils.packing_targets import TargetLibrary
 
 class BrickTilerSolver:
@@ -13,11 +13,13 @@ class BrickTilerSolver:
     """
 
     def __init__(self):
-        # High-precision interlock offsets
-        self.u_dx = 0.355
-        self.u_dy = 0.805
-        self.stride_x = 0.71
-        self.stride_y = 1.01
+        # High-precision interlock offsets (Exact Contact + Safety Epsilon)
+        # Using SAFE_TOUCH_BUFFER as a "safe touch" buffer for float stability
+        self.u_dx = 0.35 + SAFE_TOUCH_BUFFER
+        self.u_dy = 0.80 + SAFE_TOUCH_BUFFER
+        # Grid strides
+        self.stride_x = 0.70 + (2 * SAFE_TOUCH_BUFFER)
+        self.stride_y = 1.0 + (10 * SAFE_TOUCH_BUFFER)
 
     def solve(self, num_trees, stop_on_failure=False):
         if num_trees == 0: return [], 0

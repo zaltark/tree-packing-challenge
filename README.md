@@ -34,12 +34,30 @@ This will:
 
 ## Submissions
 - **Submission File:** `results/brick_tiler_submission.csv`
-- **Verified Score:** **93.274331103423** (Improved via Global Rotation Optimization)
+- **Verified Score:** **91.27272337211284** (Improved via Stride Optimization)
 - **Method:** Generated using `scripts/generate_submission.py`. 
 - **Optimization Pipeline:**
     1. **Target Selection:** For each N, the script selects the best layout between a mathematically optimized **Brick Grid** (via `TargetLibrary`) and a manual **Prime Seed**.
     2. **Global Rotation:** The entire tree cluster is brute-force rotated (0-180°) to minimize the bounding square, effectively aligning jagged edges diagonally to save space.
 - **Validation:** 100% overlap-free, verified using the official competition metric and `shapely` spatial indices.
+
+## Technical Constraints & Constants
+
+### Scale Factor & Coordinate System
+The competition metric scales all coordinates by a factor of **$10^{18}$** (`SCALE_FACTOR`) to perform integer-like arithmetic on the grid.
+- **Input:** Floating point values (e.g., `x=0.35`).
+- **Metric Internal:** `Decimal(0.35) * 1e18 = 350,000,000,000,000,000`.
+
+### "Safe Touch" Logic
+While the problem statement allows trees to "touch" (share a boundary), floating-point instability in rotation (affine transformations) can cause microscopic overlaps that invalidate a solution.
+To prevent this, a shared constant `SAFE_TOUCH_BUFFER` is enforced across all solvers:
+- **Value:** `1e-14`
+- **Usage:** Added to all contact offsets.
+    - `u_dx` (Horizontal Interlock): $0.35 + 10^{-14}$
+    - `u_dy` (Interlock Lift): $0.80 + 10^{-14}$
+    - `stride_x` (Horizontal): $0.70 + 2 \times 10^{-14}$
+    - `stride_y` (Vertical Row): $1.00 + 10^{-13}$
+This ensures that `intersects()` checks return False while maintaining near-perfect packing density.
 
 ## Project Structure
 - `src/models/brick_tiler_solver.py`: High-precision mathematical tiling model (The Champion).

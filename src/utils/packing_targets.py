@@ -26,26 +26,23 @@ class TargetLibrary:
         ideal = math.sqrt(n * TargetLibrary.NESTED_AREA)
         
         # 2. Achievable Grid (Bricks)
-        # Using Brick = 0.71 x 1.01 (contains 2 trees)
+        # Using Brick = 0.70 x 1.00 (contains 2 trees)
         n_bricks = (n + 1) // 2
         
         best_side = float('inf')
         best_rows, best_cols = 1, n_bricks
         
         # We search for the rows/cols that minimize max(W, H)
-        # Brick Width = 0.71, Brick Height = 1.205 (approx)
-        B_W = 0.71
-        B_H = 1.205
+        # Brick Width = 0.70, Stride Y = 1.00
+        B_W = 0.70
+        B_H = 1.00
         
         for r in range(1, n_bricks + 1):
             c = math.ceil(n_bricks / r)
-            # Span = (count - 1) * stride + unit_size
-            # Simplified: count * stride (close enough for targeting)
-            w = c * 0.71
-            h = r * 1.01 # This is the brick center stride
-            # A single brick is ~1.2 tall. 
-            # R bricks stacked with 1.01 stride = (R-1)*1.01 + 1.2
-            h_real = (r - 1) * 1.01 + 1.205
+            # Width: c columns * 0.70 stride + minor edge
+            w = (c - 1) * 0.70 + 1.05 # Approximate full width with interlocking
+            # Height: r rows * 1.00 stride + minor edge
+            h_real = (r - 1) * 1.00 + 1.00 
             
             side = max(w, h_real)
             if side < best_side:

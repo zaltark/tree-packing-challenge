@@ -10,6 +10,11 @@ getcontext().prec = 25
 SCALE_FACTOR = Decimal('1e18')
 scale_factor = SCALE_FACTOR # Alias for compatibility
 
+# Safety buffer for floating point stability when touching
+# The metric allows touching, but affine transformations can cause microscopic overlaps.
+# 1e-14 is safe given the 1e18 scaling.
+SAFE_TOUCH_BUFFER = 1e-14
+
 class ChristmasTree:
     """Represents a single, rotatable Christmas tree of a fixed size."""
 
