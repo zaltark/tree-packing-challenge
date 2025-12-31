@@ -1,6 +1,17 @@
 import math
 from src.models.tree_geometry import ChristmasTree, SAFE_TOUCH_BUFFER
 
+def get_odd_tree_rotation(n):
+    """
+    Returns the optimized rotation for the 'unpaired' tree in odd N.
+    These were found by brute-force searching 0-180 and global optimization.
+    """
+    optimizations = {
+        25: 120,
+        71: 125
+    }
+    return optimizations.get(n, 0)
+
 def get_seed_layout(n):
     """
     Optimized symmetric triangular/stack layouts for small N.

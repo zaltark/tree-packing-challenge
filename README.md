@@ -34,7 +34,11 @@ This will:
 
 ## Submissions
 - **Submission File:** `results/brick_tiler_submission.csv`
-- **Verified Score:** **91.27272337211284** (Improved via Stride Optimization)
+- **Verified Score:** **91.23064286806097** (Improved via Odd-Tree Rotation)
+- **Latest Research:**
+    - **Odd-Tree Individual Rotation:** Found that rotating the "remainder" tree in odd-N sets can significantly shrink the bounding box by allowing better corner fit.
+        - **N=25:** 120° rotation (2.3% improvement)
+        - **N=71:** 125° rotation (2.3% improvement)
 - **Method:** Generated using `scripts/generate_submission.py`. 
 - **Optimization Pipeline:**
     1. **Target Selection:** For each N, the script selects the best layout between a mathematically optimized **Brick Grid** (via `TargetLibrary`) and a manual **Prime Seed**.

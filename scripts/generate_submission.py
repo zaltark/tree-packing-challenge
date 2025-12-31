@@ -14,7 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.models.brick_tiler_solver import BrickTilerSolver
 from src.submission.formatter import SubmissionFormatter
 from src.models.metric import score, ParticipantVisibleError
-from src.models.seed_solver import get_seed_layout
+from src.models.seed_solver import get_seed_layout, get_odd_tree_rotation
 from src.models.tree_geometry import ChristmasTree, SCALE_FACTOR
 
 def optimize_rotation_for_trees(trees):
@@ -68,6 +68,18 @@ def main():
     for n in range(1, MAX_N + 1):
         # 1. Try Brick Tiler
         trees, side = solver.solve(n)
+        
+        # Apply Odd Tree Rotation if applicable
+        if n % 2 != 0 and n > 1:
+            opt_angle = get_odd_tree_rotation(n)
+            if opt_angle != 0:
+                new_trees = []
+                for i, t in enumerate(trees):
+                    if i == n - 1:
+                        new_trees.append(ChristmasTree(t.center_x, t.center_y, opt_angle))
+                    else:
+                        new_trees.append(t)
+                trees = new_trees
         
         # 2. Try Seed Layout
         seed_trees = get_seed_layout(n)
