@@ -27,6 +27,8 @@ venv/
 .venv/
 env/
 
+results/best_known_math.md
+
 # IDE
 .vscode/
 .idea/
