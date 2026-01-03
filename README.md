@@ -34,7 +34,7 @@ This will:
 
 ## Submissions
 - **Submission File:** `output/submission.csv`
-- **Verified Score:** **91.23064286806097** (Improved via Odd-Tree Rotation)
+- **Verified Score:** **91.11704328246536** (Improved via Odd-Tree Rotation)
 - **Latest Research:**
     - **Odd-Tree Individual Rotation:** Found that rotating the "remainder" tree in odd-N sets can significantly shrink the bounding box by allowing better corner fit.
         - **N=13, 25, 49, 71, 109, 141, 193:** Optimized rotations (up to 2.3% improvement)
