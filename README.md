@@ -25,21 +25,20 @@ pip install -r requirements.txt
 To generate the optimization, verification, and submission file in one go:
 
 ```bash
-python scripts/generate_submission.py
+python main.py
 ```
 This will:
 1.  Solve all 200 configurations using the Ensemble + Global Rotation strategy.
-2.  Save the submission to `results/brick_tiler_submission.csv`.
+2.  Save the submission to `output/submission.csv`.
 3.  Verify the score against the official metric.
 
 ## Submissions
-- **Submission File:** `results/brick_tiler_submission.csv`
+- **Submission File:** `output/submission.csv`
 - **Verified Score:** **91.23064286806097** (Improved via Odd-Tree Rotation)
 - **Latest Research:**
     - **Odd-Tree Individual Rotation:** Found that rotating the "remainder" tree in odd-N sets can significantly shrink the bounding box by allowing better corner fit.
-        - **N=25:** 120° rotation (2.3% improvement)
-        - **N=71:** 125° rotation (2.3% improvement)
-- **Method:** Generated using `scripts/generate_submission.py`. 
+        - **N=13, 25, 49, 71, 109, 141, 193:** Optimized rotations (up to 2.3% improvement)
+- **Method:** Generated using `main.py`. 
 - **Optimization Pipeline:**
     1. **Target Selection:** For each N, the script selects the best layout between a mathematically optimized **Brick Grid** (via `TargetLibrary`) and a manual **Prime Seed**.
     2. **Global Rotation:** The entire tree cluster is brute-force rotated (0-180°) to minimize the bounding square, effectively aligning jagged edges diagonally to save space.
@@ -64,14 +63,16 @@ To prevent this, a shared constant `SAFE_TOUCH_BUFFER` is enforced across all so
 This ensures that `intersects()` checks return False while maintaining near-perfect packing density.
 
 ## Project Structure
-- `src/models/brick_tiler_solver.py`: High-precision mathematical tiling model (The Champion).
-- `src/models/prime_seeds.py`: Manual optimization for small prime numbers (N=3, 5, 7).
-- `src/models/tree_geometry.py`: Verified official tree specifications and $10^{18}$ scaling.
-- `src/models/metric.py`: Official scoring logic (Side^2 / N).
-- `src/utils/packing_targets.py`: Heuristic for mathematically ideal grid aspect ratios.
-- `src/submission/formatter.py`: Submission CSV formatting.
-- `scripts/generate_submission.py`: **Main Pipeline**. Runs the ensemble, optimizes rotation, generates the CSV, and verifies the score.
-- `scripts/visualize_results.py`: Utility to plot packing configurations.
-- `results/plots/`: Visual confirmation of the packing patterns.
-
-*Note: All experimental and legacy scripts have been moved to `archive/` folders.*
+- `main.py`: **Main Pipeline**. Runs the ensemble, optimizes rotation, generates the CSV, and verifies the score.
+- `solver/`: Core logic package.
+    - `engine.py`: High-precision mathematical tiling model (The Champion).
+    - `strategies.py`: Manual optimization for small numbers and odd remainders.
+    - `geometry.py`: Verified official tree specifications and $10^{18}$ scaling.
+    - `scoring.py`: Official scoring logic (Side^2 / N).
+    - `targets.py`: Heuristic for mathematically ideal grid aspect ratios.
+    - `io.py`: Submission CSV formatting.
+- `tools/`: Helper scripts.
+    - `visualize.py`: Utility to plot packing configurations.
+    - `plot_submission.py`: Generates visual confirmation of the submission.
+    - `proofs/`: Scripts that mathematically derive the efficiency limits and constants.
+- `output/`: Generated CSVs and plots.
